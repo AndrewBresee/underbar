@@ -109,7 +109,7 @@
     // TIP: see if you can re-use _.filter() here, without simply
     // copying code in and modifying it
 
-     return _.filter(collection,function(x){
+     return _.filter(collection,function(x,y){
       return (!test(x))
     })
   };
@@ -123,7 +123,6 @@
         newArray.push(array[i])
       }
     }
-
     return newArray; 
   };
 
@@ -133,6 +132,12 @@
     // map() is a useful primitive iteration function that works a lot
     // like each(), but in addition to running the operation on all
     // the members, it also maintains an array of results.
+    var newArr = [];
+    _.each(collection,function(item,index){
+      newArr.push(iterator(item))
+    })
+    return newArr;
+
   };
 
   /*
@@ -173,7 +178,17 @@
   //     return total + number * number;
   //   }); // should be 5, regardless of the iterator function passed in
   //          No accumulator is given so the first element is used.
-  _.reduce = function(collection, iterator, accumulator) {
+  _.reduce = function(collection, iterator, accumulator){
+    var current = accumulator; 
+    _.each(collection, function(item, index){
+      if(current === undefined){
+        current = collection[0]
+      } else {
+        current = iterator(current, item);
+      }
+     
+    })
+    return current; 
   };
 
   // Determine if the array or object contains a given value (using `===`).
