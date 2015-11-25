@@ -77,6 +77,8 @@
     // it uses the iteration helper `each`, which you will need to write.
     var result = -1;
 
+//iterator should take three arguments. Item = collection[key], index = key. How can this work without the array being passed in?
+//In _.each, the third argument "collection" is an optional argument. 
     _.each(array, function(item, index) {
       if (item === target && result === -1) {
         result = index;
@@ -87,7 +89,17 @@
   };
 
   // Return all elements of an array that pass a truth test.
+
+  //Will have to use _.each funciton. Can use _.indexOf as a template
   _.filter = function(collection, test) {
+    var newCollection = [];
+    _.each(collection, function(item,index){
+      if(test(item) === true){
+        newCollection.push(item)
+      }
+    });
+    return newCollection; 
+
   };
 
   // Return all elements of an array that don't pass a truth test.
