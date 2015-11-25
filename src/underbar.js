@@ -93,23 +93,38 @@
   //Will have to use _.each funciton. Can use _.indexOf as a template
   _.filter = function(collection, test) {
     var newCollection = [];
+
+    //calls the each funciton and tests if the item (collection[key]) passes. If it does, it pushes the passed item into the new array. 
     _.each(collection, function(item,index){
       if(test(item) === true){
         newCollection.push(item)
       }
     });
     return newCollection; 
-
   };
+
 
   // Return all elements of an array that don't pass a truth test.
   _.reject = function(collection, test) {
     // TIP: see if you can re-use _.filter() here, without simply
     // copying code in and modifying it
+
+     return _.filter(collection,function(x){
+      return (!test(x))
+    })
   };
 
   // Produce a duplicate-free version of the array.
   _.uniq = function(array) {
+    var newArray = [];
+
+    for(var i = 0; i<array.length; i++){
+      if ( _.indexOf(newArray, array[i]) === -1){
+        newArray.push(array[i])
+      }
+    }
+
+    return newArray; 
   };
 
 
