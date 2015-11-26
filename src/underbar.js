@@ -1,7 +1,11 @@
+
+
 (function() {
   'use strict';
 
   window._ = {};
+
+  //Testing adding commit without the -m tag
 
   // Returns whatever value is passed as the argument. This function doesn't
   // seem very useful, but remember it--if a function needs to provide an
@@ -114,11 +118,6 @@
     })
   };
 
-
-
-  //TEST TEST
-
-  
 
   // Produce a duplicate-free version of the array.
   _.uniq = function(array) {
