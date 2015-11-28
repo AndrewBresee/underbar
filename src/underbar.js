@@ -5,7 +5,6 @@
 
   window._ = {};
 
-  //Testing adding commit without the -m tag
 
   // Returns whatever value is passed as the argument. This function doesn't
   // seem very useful, but remember it--if a function needs to provide an
@@ -34,6 +33,8 @@
    * implementing the sections you are responsible for.
    */
 
+
+
   // Return an array of the first n elements of an array. If n is undefined,
   // return just the first element.
   _.first = function(array, n) {
@@ -45,20 +46,26 @@
   _.last = function(array, n) {
     var final = (array.length)
     if (n === undefined) {
+      //if n is undefined, it will return the last element (array length -1)
       return array[final -1]
     } else if (n<final){
+
+      //this will start the slice at the end (final) and go back n spaces. It will then slice to the end (final)
       return array.slice(final-n, final)
     } else {
       return array; 
     }
   };
 
+
   // Call iterator(value, key, collection) for each element of collection.
   // Accepts both arrays and objects.
   //
   // Note: _.each does not have a return value, but rather simply runs the
   // iterator function over each item in the input collection.
+
   _.each = function(collection, iterator) {
+    //(object.constructor) is used to determine if is an object or an array
      if (collection.constructor === Object){
       for (var key in collection){
         iterator(collection[key], key, collection);
@@ -68,10 +75,14 @@
         iterator(collection[i], i, collection); 
       }
     } else {
+
+      //if the  collection is neither an array nor an object, the funciton returns an error
       alert("Wrong input!")
     }
    
   };
+
+
 
   // Returns the index at which value can be found in the array, or -1 if value
   // is not present in the array.
@@ -80,6 +91,10 @@
     // implemented for you. Instead of using a standard `for` loop, though,
     // it uses the iteration helper `each`, which you will need to write.
     var result = -1;
+    //here, result starts off at -1. If it is not changed, the target item is not there, then the function returns -1
+    //indicating that the targer is not in the array
+
+
 
 //iterator should take three arguments. Item = collection[key], index = key. How can this work without the array being passed in?
 //In _.each, the third argument "collection" is an optional argument. 
@@ -91,6 +106,8 @@
 
     return result;
   };
+
+
 
   // Return all elements of an array that pass a truth test.
 
@@ -113,6 +130,10 @@
     // TIP: see if you can re-use _.filter() here, without simply
     // copying code in and modifying it
 
+
+    //this returns the array that is made in the filter function. 
+    //The predicate here is the opposite of the normal predicate. 
+    //This will return an array of the values that failed the predicate. 
      return _.filter(collection,function(x,y){
       return (!test(x))
     })
@@ -123,6 +144,10 @@
   _.uniq = function(array) {
     var newArray = [];
 
+
+    //This builds a new array. If the value is not present in the new array
+    //it pushes the value into the new array. If the value IS present in the 
+    //array, it does not push the value
     for(var i = 0; i<array.length; i++){
       if ( _.indexOf(newArray, array[i]) === -1){
         newArray.push(array[i])
@@ -130,6 +155,7 @@
     }
     return newArray; 
   };
+
 
 
   // Return the results of applying an iterator to each element.
@@ -151,6 +177,8 @@
    * as an example of this.
    */
 
+
+
   // Takes an array of objects and returns and array of the values of
   // a certain property in it. E.g. take an array of people and return
   // an array of just their ages
@@ -158,10 +186,17 @@
     // TIP: map is really handy when you want to transform an array of
     // values into a new array of values. _.pluck() is solved for you
     // as an example of this.
+
+    //This returns an array of just values, specified by the argument "key". 
+    //If the user wanted to have an array of just ages, they would pass in 
+    //the argument "age" for key. This would take an array of objects, and 
+    //return just an array with the value of each objects age key
     return _.map(collection, function(item){
       return item[key];
     });
   };
+
+
 
   // Reduces an array or object to a single value by repetitively calling
   // iterator(accumulator, item) for each item. accumulator should be
@@ -183,6 +218,11 @@
   //     return total + number * number;
   //   }); // should be 5, regardless of the iterator function passed in
   //          No accumulator is given so the first element is used.
+
+
+//if no start value is passsed in, the start value becomes the first item in the array
+//using the _.each function allows the iterator to be applied to every element. 
+//The iterator acts on both the current variable (start value) and the current item (value) being examined. 
   _.reduce = function(collection, iterator, accumulator){
     var current = accumulator; 
     _.each(collection, function(item, index){
@@ -191,16 +231,22 @@
       } else {
         current = iterator(current, item);
       }
-     
-     
     })
     return current; 
+
   };
+
+
+//SECTION II 
+
 
   // Determine if the array or object contains a given value (using `===`).
   _.contains = function(collection, target) {
     // TIP: Many iteration problems can be most easily expressed in
     // terms of reduce(). Here's a freebie to demonstrate!
+
+    // in this case, the accumulator stars off as "false" and only becomes true if the value appears
+    //when "true" does appear, current becomes "true" and remains true
     return _.reduce(collection, function(wasFound, item) {
       if (wasFound) {
         return true;
@@ -213,12 +259,25 @@
   // Determine whether all of the elements match a truth test.
   _.every = function(collection, iterator) {
     // TIP: Try re-using reduce() here.
-  };
+
+    //If any item does not pass the truth test, then "current" becomes false, and does not change back
+    return _.reduce(collection, function(total, item){
+       if(iterator === undefined){
+        return item;
+      } else if (!iterator(item)){
+        return false; 
+      }
+      return total; 
+    }, true) 
+              };
+
 
   // Determine whether any of the elements pass a truth test. If no iterator is
   // provided, provide a default one
   _.some = function(collection, iterator) {
     // TIP: There's a very clever way to re-use every() here.
+
+
   };
 
 
