@@ -263,6 +263,7 @@
     //If any item does not pass the truth test, then "current" becomes false, and does not change back
     return _.reduce(collection, function(total, item){
        if(iterator === undefined){
+        //**Not totally confident on why it needs to return the item**
         return item;
       } else if (!iterator(item)){
         return false; 
@@ -275,10 +276,36 @@
   // Determine whether any of the elements pass a truth test. If no iterator is
   // provided, provide a default one
   _.some = function(collection, iterator) {
+
+
     // TIP: There's a very clever way to re-use every() here.
+    if(iterator === undefined){
+      iterator = function(item){
+        return item
+      }
+    }
 
+    return (!_.every(collection, function(item){
+      return (!iterator(item))
+    }))
+  }
 
-  };
+    //Below is my method of completing some, without reusing every.
+    /* 
+    if(iterator === undefined){
+      iterator = function(i){
+        return i
+        }
+      }
+
+      return _.reduce(collection, function(total, item){
+        if (iterator(item)){
+          return true; 
+        }
+        return total; 
+    }, false)
+    */
+
 
 
   /**
@@ -299,12 +326,38 @@
   //   }, {
   //     bla: "even more stuff"
   //   }); // obj1 now contains key1, key2, key3 and bla
+
+
+
+//Clearly going to need to use the arguments object, as the number of arguments passed to _.extend could be infinite.
+//Each argument is an object with varrying number of keys. There must be a loop that goes over the arguments, then
+//a for in loop to go through each object 
+
   _.extend = function(obj) {
+
+    for(var i =0; i<arguments.length; i++){
+      for(var key in arguments[i]){
+        obj[key] = arguments[i][key]
+      }
+    }
+    return obj       
   };
+
+
 
   // Like extend, but doesn't ever overwrite a key that already
   // exists in obj
+
+  //Below, just like _.extend. But it checks if the key already exists. If it does exist, it does not overwite it.
   _.defaults = function(obj) {
+    for(var i =0; i<arguments.length; i++){
+      for(var key in arguments[i]){
+        if(obj[key] === undefined){
+          obj[key] = arguments[i][key]
+        }
+      }
+    }
+    return obj  
   };
 
 
@@ -316,6 +369,8 @@
    * and return out a new version of the function that works somewhat differently
    */
 
+
+
   // Return a function that can be called at most one time. Subsequent calls
   // should return the previously returned value.
   _.once = function(func) {
@@ -324,6 +379,7 @@
     // time it's called.
     var alreadyCalled = false;
     var result;
+
 
     // TIP: We'll return a new function that delegates to the old one, but only
     // if it hasn't been called before.
@@ -339,6 +395,8 @@
     };
   };
 
+
+
   // Memorize an expensive function's results by storing them. You may assume
   // that the function only takes primitives as arguments.
   // memoize could be renamed to oncePerUniqueArgumentList; memoize does the
@@ -347,8 +405,35 @@
   // _.memoize should return a function that, when called, will check if it has
   // already computed the result for the given argument and return that value
   // instead if possible.
+
+  //Create a store of different arguments and results. If the argument is not present, add it to the store. 
+  //If it is present, return the results
+  //Need to be able to see if values exist in an object. What is something like indexOf for objects? 
   _.memoize = function(func) {
+
+    var store ={}; 
+    var seenArguments = []
+
+    //Creates an array of arguments. If the argument is already there, show the calculated result
+    //if the argument is not there, push the argument into the array, calculate the result
+    //and store the result into store. 
+
+      return function(){
+        for(var i=0; i<arguments.length;i++){
+            if(seenArguments.indexOf(arguments[i]) === -1){
+              seenArguments.push(arguments[i]); 
+              store[arguments] = func.apply(this, arguments);
+            } else {
+              return store[arguments]
+            }
+          return store[arguments]
+        }
+        
+
+    }
+
   };
+
 
   // Delays a function for the given number of milliseconds, and then calls
   // it with the arguments supplied.
@@ -356,8 +441,27 @@
   // The arguments for the original function are passed after the wait
   // parameter. For example _.delay(someFunction, 500, 'a', 'b') will
   // call someFunction('a', 'b') after 500ms
+
+
   _.delay = function(func, wait) {
-  };
+    if(arguments.length > 2){
+      setInterval(function(){ func.apply(arguments[2],arguments[3])}, wait)
+    } else {
+      setInterval(func, wait)
+    }
+
+
+
+  }
+
+
+/*
+    var timeKeeper = 0;
+    for(var i=0; i<(wait*125390);i++){
+      timeKeeper+=1
+    }
+    return func(arguments[2],arguments[3])
+    */
 
 
   /**
@@ -370,8 +474,39 @@
   // TIP: This function's test suite will ask that you not modify the original
   // input array. For a tip on how to make a copy of an array, see:
   // http://mdn.io/Array.prototype.slice
+
+//Use math.random to randomize a number 0 or 1
+//the length of the array as the number of loops
+//If the number is 1, push the number adding to the back
+//If the number is 0, unshift, adding to the front. 
+
+
   _.shuffle = function(array) {
+    var newArray = [];
+    for(var i =0; i<array.length;i++){
+      var randomNum = (Math.floor(Math.random()*2))
+      if(randomNum === 1){
+        newArray.push(array[i])
+      } else {
+        newArray.unshift(array[i])
+      }
+    }
+    return newArray;
+
   };
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
   /**
