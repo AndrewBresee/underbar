@@ -444,14 +444,15 @@
 
 
   _.delay = function(func, wait) {
+
+    var myParameters = [arguments[2], arguments[3]]
+
     if(arguments.length > 2){
-      setInterval(function(){ func.apply(arguments[2],arguments[3])}, wait)
+      setInterval(func.apply(null, myParameters), wait)
     } else {
       setInterval(func, wait)
     }
-
-
-
+    
   }
 
 
