@@ -245,8 +245,9 @@
     // TIP: Many iteration problems can be most easily expressed in
     // terms of reduce(). Here's a freebie to demonstrate!
 
-    // in this case, the accumulator stars off as "false" and only becomes true if the value appears
-    //when "true" does appear, current becomes "true" and remains true
+
+    // In this case, the accumulator stars off as "false" and only becomes true if the value appears.
+    //When "true" does appear, current becomes "true" and remains true
     return _.reduce(collection, function(wasFound, item) {
       if (wasFound) {
         return true;
@@ -256,11 +257,14 @@
   };
 
 
+
   // Determine whether all of the elements match a truth test.
   _.every = function(collection, iterator) {
     // TIP: Try re-using reduce() here.
 
-    //If any item does not pass the truth test, then "current" becomes false, and does not change back
+    //If any item does not pass the truth test, then "current" becomes false, and does not change back to true
+    //false is then passed through the function
+
     return _.reduce(collection, function(total, item){
        if(iterator === undefined){
         //**Not totally confident on why it needs to return the item**
@@ -277,8 +281,9 @@
   // provided, provide a default one
   _.some = function(collection, iterator) {
 
-
     // TIP: There's a very clever way to re-use every() here.
+
+    //if the iterator does not exist...
     if(iterator === undefined){
       iterator = function(item){
         return item
@@ -290,7 +295,8 @@
     }))
   }
 
-    //Below is my method of completing some, without reusing every.
+    //Below is my method of completing some, without reusing every. 
+    //Did this first to work out thought process. 
     /* 
     if(iterator === undefined){
       iterator = function(i){
@@ -452,7 +458,7 @@
     } else {
       setInterval(func, wait)
     }
-    
+
   }
 
 
